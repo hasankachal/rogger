@@ -12,7 +12,7 @@ import streamlit as st
 import time
 from langchain_community.llms import Ollama
 from rogger.llm.aya import Aya101LLM
-
+# from googletrans import Translator
 
 st.set_page_config(layout='wide')
 
@@ -105,9 +105,13 @@ if "llm" not in st.session_state:
 if "chat_history" not in st.session_state:
     logger.info("Initiating chat-history")
     st.session_state.chat_history = []
-# if "translator" not in st.session_state:
-#     logger.info("Initiating chat-history")
-#     st.session_state.translator = Aya101LLM()
+if "translator" not in st.session_state:
+    logger.info("Initiating chat-history")
+    st.session_state.translator = Aya101LLM()
+    # st.session_state.translator = Translator(service_urls=[
+    #    'translate.googleapis.com'
+    # ])
+    
 # if "reranker" not in st.session_state:
 #     logger.info("Initiating reranker ...")
 #     st.session_state.reranker = Reranker()
@@ -142,6 +146,7 @@ for message in st.session_state.chat_history:
 def generate_response_llm(input_text,session):
     logger.info("Invoking prompt to LLM ...")
     english_prompt = st.session_state.translator.invoke(input=f"translate this sentence from persian to english and if you seen any unknown(<UNK>) words in text just leave the word untranslated in the related position: {input_text}")
+    # english_prompt = st.session_state.translator.translate(text=input_text,src="fa",dest="en").text
     logger.info(f"translated prompt to {english_prompt}")
     raw_context = retrieve_page_content(st.session_state.vecstore_bm25,english_prompt)
     
@@ -152,6 +157,7 @@ def generate_response_llm(input_text,session):
     logger.info(f"query LLM with {query}")
     response = st.session_state.llm.invoke(query)
     persian_response = st.session_state.translator.invoke(input=f"translate this english text to persian and if you seen any unknown(<UNK>) words in text just leave the word untranslated in the related position:: {response}")
+    # persian_response = st.session_state.translator.translate(text=response,src="en",dest="fa").text
     for letter in persian_response:
         time.sleep(0.01)
         yield letter

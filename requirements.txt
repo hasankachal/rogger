@@ -19,3 +19,4 @@ rank_bm25
 nltk
 future
 openpyxl
+# googletrans==3.1.0a0
