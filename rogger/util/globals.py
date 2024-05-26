@@ -8,76 +8,31 @@ from flashrank import Ranker, RerankRequest
 import pandas as pd
 
 
-def translate_prompt(prompt:str):
-    from rogger.llm import aya
-    result = aya.Aya101LLM()._call(
-        f"Translate the following text from perisan to english then summerize it to usefull sentences: \n {prompt}"
-    )
-    print("TRANSLATED PROMPT :",result)
-    return result
-
-def translate_result(prompt: str):
-    from rogger.llm import aya
-    prompt.replace(":"," ")
-    return aya.Aya101LLM()._call(
-        f"Translate the following text from English to Persian: {prompt}"
-    )
-
-def read_data(name):
-    with open(f"assets/{name}","r",encoding='utf-8') as file:
-        content = json.load(file)
-    return content
 
 def create_docs(raw:bool=True):
     filepath = "assets/2_landbased_air_defence_radars.xlsx"
-    if raw:
-        core_path = "assets/framed.csv"
-        base_data = pd.read_excel(filepath)
-        docs_buffer = []
-        for _, row in base_data.iterrows():
-            output = f"""{row['chapter_title']} > {row['country']} > {row['radar_name']} > """
-            for col_name in [
-                "subtitle_one",
-                "subtitle_two",
-                "subtitle_three",
-                "subtitle_four",
-                "subtitle_five",
-            ]:
-                if not pd.isna(row[col_name]):
-                    # last_section = row[col_name]
-                    output += row[col_name] + " > "
+    base_data = pd.read_excel(filepath)
+    docs_buffer = []
+    for _, row in base_data.iterrows():
+        output = f"""{row['chapter_title']} > {row['country']} > {row['radar_name']} > """
+        for col_name in [
+            "subtitle_one",
+            "subtitle_two",
+            "subtitle_three",
+            "subtitle_four",
+            "subtitle_five",
+        ]:
+            if not pd.isna(row[col_name]):
+                # last_section = row[col_name]
+                output += row[col_name] + " > "
 
-            output += " " + str(row["text"])
+        output += " " + str(row["text"])
 
-            if not pd.isna(row["keywords"]):
-                output += " Keywords:" + ", ".join(row["keywords"].split(";"))
-            tmp_doc = Document(page_content=output)
-            tmp_doc.metadata = {"content":row['text']}
-            docs_buffer.append(tmp_doc)
-    else:
-        base_data = pd.read_excel(filepath)
-        last_section = ""
-        docs_buffer = []
-        for _, row in base_data.iterrows():
-            output = f"""{row['chapter_title']} > {row['country']} > {row['radar_name']} > """
-            for col_name in [
-                "subtitle_one",
-                "subtitle_two",
-                "subtitle_three",
-                "subtitle_four",
-                "subtitle_five",
-            ]:  
-                if not pd.isna(row[col_name]):
-                    # last_section = row[col_name]
-                    output += row[col_name] + " > "
-
-            output += " " + str(row["text"])
-
-            if not pd.isna(row["keywords"]):
-                output += " Keywords:" + ", ".join(row["keywords"].split(";"))
-            tmp_doc = Document(page_content=output)
-            tmp_doc.metadata = {"content":dict(row)}
-            docs_buffer.append(tmp_doc)
+        if not pd.isna(row["keywords"]):
+            output += " Keywords:" + ", ".join(row["keywords"].split(";"))
+        tmp_doc = Document(page_content=output)
+        tmp_doc.metadata = {"content":row['text']}
+        docs_buffer.append(tmp_doc)
     return docs_buffer
 
 ms = "ms-marco-MultiBERT-L-12"

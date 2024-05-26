@@ -1,12 +1,12 @@
 [
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  For its part, KRONOS 3D LND is designed to provide point defence (including designation of targets to associated firing units) and gap filling within an air defence network. The accompanying specification data is generic to both the KRONOS 3D LND and NV configurations. Keywords:land-based configuration (designated as KRONOS 3D LND),  shipborne configuration (KRONOS 3D NV), ",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Described by Selex as building on its experience with radars such as EMPAR, KRONOS 3D employs a 'full' solid-state, active, phased array antenna and is available in both land-based (designated as KRONOS 3D LND) and shipborne (KRONOS 3D NV) configurations.",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  In terms of beam use, KRONOS 3D employs one pencil beam for transmission and four concurrent reception beams that feed 'high' dynamic range dedicated channels. This arrangement is implemented in order to obtain high resolution and accuracy in azimuth and elevation determination.",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > IFF antenna >  optional",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Again, coverage is obtained by means of azimuth and elevation phase scanning together with mechanical rotation in azimuth (at 60 rpm).",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > BITE >  fault identification and location",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Status >  On 3 August 2009, Finmeccanica announced that its Selex Sistemi Integrati subsidiary had been awarded a then year EUR15 million contract with regard to the supply of an IPN-S command and control system, an NA-30S fire-control system, a KRONOS 3D NV radar, a SIR-M secondary radar and a Medusa Mk 48 electro-optical system for installation aboard a new United Arab Emirates Navy 'Abu Dhabi class ship'. While not confirmed, Jane's sources suggest that the vessel referred to is the service's corvette Abu Dhabi and that the cited sale represented the first procurement of a KRONOS 3D sensor. Most recently, Selex Sistemi Integrati has continued to promote the KRONOS 3D multi role radar.",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Elsewhere, the radar is reported to make use of modular and adaptive signal processing architectures that are described as incorporating 'various integrated processes'.",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > Antenna rotation speed >  60 rpm",
-    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > Receiver IF dynamic range >  high linear range"
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Frequency >  1-2 GHz",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > MTTR >  <0.5 h",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Azimuth beamwidth >  1.4°",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Dimensions (W x H) >  12 x 7 m",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Elevation coverage >  -2° to +20°",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Status >  As originally scheduled, the Portuguese variant was slated to undergo factory acceptance testing during 2008. Indra is also known to have developed a navalised LANZA configuration that is designated as the 3D LANZA-N (which see).",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > MTBF >  > 1,530 h",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Availability >  >99.9%",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Contractor >  Indra, Madrid",
+    "LAND-BASED AIR DEFENCE RADARS > Spain > LANZA air surveillance radar > Specifications > Altitude >  Up to 30,480 m"
 ]

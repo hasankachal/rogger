@@ -20,6 +20,7 @@ st.set_page_config(layout="wide")
 
 st.title("🦜🔗 Rogger")
 st.session_state.theme = "dark"
+st.session_state.bot = "beaver"
 
 st.markdown(
     """
@@ -59,6 +60,21 @@ def _save(name, buffer):
     with open(f"assets/test/{name}.json", "w", encoding="utf-8") as file:
         json.dump(buffer, file, ensure_ascii=False, indent=4)
 
+
+def retrieve_topic(retriever: BaseRetriever, query: str) -> List[Document]:
+    buffer = []
+    result = retriever.invoke(query)
+    for doc in result:
+        classname = retriever.__repr__()[:13]
+        logger.info(f"appending from {classname} CLASS")
+        try:
+            buffer.append(Document(page_content=doc.metadata["content"]))
+        except Exception as fail:
+            logger.error(f"failed to collect contnet metadata {doc} {fail}")
+    _save(name="topic", buffer=[x.page_content for x in buffer])
+    return buffer
+
+
 def retrieve_page_content(retriever: BaseRetriever, query: str) -> List[Document]:
     buffer = []
     result = retriever.invoke(query)
@@ -85,7 +101,10 @@ if "chat_id" not in st.session_state:
     st.session_state.chat_id = None
 if "docs_raw" not in st.session_state:
     logger.info("Initiating Docs ...")
-    st.session_state.docs_raw = create_docs()
+    st.session_state.docs_raw = create_docs(raw=True)
+if "docs_topic" not in st.session_state:
+    logger.info("Initiating Docs ...")
+    st.session_state.docs_topic = create_docs(raw=False)
 if "vecstore_bm25" not in st.session_state or "vecstore_tfidf" not in st.session_state:
     logger.info("Initiating retriever on page content...")
     st.session_state.vecstore_tfidf = create_vec_store(
@@ -102,7 +121,12 @@ if "llm" not in st.session_state:
 if "chat_history" not in st.session_state:
     logger.info("Initiating chat-history")
     st.session_state.chat_history = []
-
+# if "translator" not in st.session_state:
+#     logger.info("Initiating chat-history")
+#     st.session_state.translator = Aya101LLM()
+# st.session_state.translator = Translator(service_urls=[
+#    'translate.googleapis.com'
+# ])
 
 # if "reranker" not in st.session_state:
 #     logger.info("Initiating reranker ...")
@@ -114,16 +138,20 @@ def click_button():
 
 
 def make_prompt(message: str = "", context: list = []):
-    template = f"""با خواندن مطالب موجود در تگ <زمینه> قست های مرتبط با سوال من رو پیدا کن و به سوال من که در قسمت <سوال> آمده است پاسخ بده
-<زمینه>
-{context}
-<پایان زمینه>
 
-<سوال>
-{message}
-<پایان سوال>
+    # Answer my question which is found between <QUESTION> and <END OF QUESTION> based on the information found between <CONTEXT> and <END OF CONTEXT>.
+    template = f"""
+    Read the section in <CONTEXT> to find description about any content related to my text in <QUESTION> tag and answer it accordingly.
 
-"""
+    <CONTEXT>
+    {context}
+    <END CONTEXT>
+
+    <QUESTION>
+    {message}
+    <END QUESTION>
+    """
+
 
     logger.info(f"Invoking {template}")
     return template
@@ -142,18 +170,25 @@ for message in st.session_state.chat_history:
 def generate_response_llm(input_text, session):
     print(len(st.session_state.docs_raw))
     logger.info("Invoking prompt to LLM ...")
-    raw_context = retrieve_page_content(st.session_state.vecstore_bm25, input_text)[:14]
-    extend_context = retrieve_page_content(st.session_state.vecstore_tfidf,input_text)[:6]
-    raw_context.extend(extend_context)
-    ctx_list = list(set([x.page_content for x in raw_context]))
-    _save(name="merged", buffer=ctx_list)
-    context = "\n".join(ctx_list)
+    english_prompt = st.session_state.llm.invoke(
+        input=f"translate this sentence from persian to english and if you seen any unknown(<UNK>) words in text just leave the word untranslated in the related position \n - {input_text}"
+    )
+    logger.info(f"translated prompt to {english_prompt}")
+    raw_context = retrieve_page_content(st.session_state.vecstore_bm25, english_prompt)
+
+    # topic_based_context = retrieve_topic(st.session_state.bm25,input_text)[:12]
+    # raw_context.extend(topic_based_context)
+    _save(name="merged", buffer=[x.page_content for x in raw_context])
+    context = "\n".join([x.page_content for x in raw_context])
     query = make_prompt(input_text, context=context)
     logger.info(f"query LLM with {query}")
     response = st.session_state.llm.invoke(query)
     logger.warning(f"raw response from llm {response}")
     response.replace(":", "")
-    for letter in response:
+    persian_response = st.session_state.llm.invoke(
+        input=f"translate this english text to persian and if you seen any unknown(<UNK>) words in text just leave the word untranslated in the related position \n - {response}"
+    )
+    for letter in persian_response:
         time.sleep(0.01)
         yield letter
     session.append({"src": "AI", "text": response})

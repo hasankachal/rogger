@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 from typing import Any, List
 from rogger.util.globals import *
@@ -19,27 +18,28 @@ e5_checkpoint = "intfloat/multilingual-e5-large-instruct"
 e5_model = SentenceTransformer(e5_checkpoint)
 # e5_model.max_seq_length = 1000
 
-def preprocess_text(text: str | List[str]) -> List[str]:
-        try:
-            import tiktoken
-        except ImportError:
-            raise ImportError(
-                "Could not import tiktoken requirements"
-            )
-        enc = tiktoken.encoding_for_model("gpt-4")
-        if isinstance(text, str):
 
-            tokens = enc.encode(text)
-            output = [str(token) for token in tokens]
-            return output
-        elif isinstance(text, list):
-            outputs = []
-            for t in text:
-                lowered = " " + t.lower()
-                lowered = lowered.replace("\n"," ")
-                tokens = enc.encode(lowered)
-                outputs.append([str(token) for token in tokens])
-            return outputs
+def preprocess_text(text: str | List[str]) -> List[str]:
+    try:
+        import tiktoken
+    except ImportError:
+        raise ImportError("Could not import tiktoken requirements")
+    enc = tiktoken.encoding_for_model("gpt-4")
+    if isinstance(text, str):
+
+        tokens = enc.encode(text)
+        output = [str(token) for token in tokens]
+        return output
+    elif isinstance(text, list):
+        outputs = []
+        for t in text:
+            lowered = " " + t.lower()
+            lowered = lowered.replace("\n", " ")
+            tokens = enc.encode(lowered)
+            outputs.append([str(token) for token in tokens])
+        return outputs
+
+
 class E5Embeddings(Embeddings):
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         global e5_model
@@ -55,7 +55,8 @@ class E5Embeddings(Embeddings):
         query = f"Instruct: {task_description}\nQuery: {text}"
         resp = self.embed_documents([query])[0]
         return resp
-    
+
+
 class E5Retriever(BaseRetriever):
     vectorizer: Any
     docs: List[Document] = Field(repr=False)
@@ -87,7 +88,7 @@ class E5Retriever(BaseRetriever):
         tfidf_params = tfidf_params or {}
         vectorizer = E5Embeddings()
         metadatas = metadatas or ({} for _ in texts)
-        
+
         docs = [Document(page_content=t, metadata=m) for t, m in zip(texts, metadatas)]
         return cls(
             vectorizer=vectorizer, docs=docs, preprocess_func=preprocess_func, **kwargs
@@ -114,7 +115,10 @@ class E5Retriever(BaseRetriever):
     def _get_relevant_documents(
         self, query: str, *, run_manager: CallbackManagerForRetrieverRun
     ) -> List[Document]:
-        retriver = Chroma.from_documents(documents=self.docs,embedding=self.vectorizer,persist_directory="assets/cache").as_retriever()
+        retriver = Chroma.from_documents(
+            documents=self.docs,
+            embedding=self.vectorizer,
+            persist_directory="assets/cache",
+        ).as_retriever(search_kwargs={"k": 30})
         return_docs = retriver.invoke(query)
         return return_docs
-
