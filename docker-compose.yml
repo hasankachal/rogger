@@ -1,10 +1,10 @@
 version: "3"
 services:
-  bb_assistant:
-    image: nexus.bmbzr.ir/nile/chatbot:v0.2
+  rogger:
+    image: rogger
     restart: always
-    hostname: bb_assistant
-    container_name: bb_assistant
+    hostname: rogger
+    container_name: rogger
     ports:
       - 9000:9000
       - 8501:8501
