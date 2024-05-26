@@ -2,4 +2,4 @@
 
 set -e 
 
-bb_assistant ui -H "${HOST}" -p "${PORT}" -v "${INSTANCE}"
+rogger run -H "${HOST}" -p "${PORT}" -v "${INSTANCE}"
