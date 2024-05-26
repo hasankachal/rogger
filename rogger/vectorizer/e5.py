@@ -119,6 +119,6 @@ class E5Retriever(BaseRetriever):
             documents=self.docs,
             embedding=self.vectorizer,
             persist_directory="assets/cache",
-        ).as_retriever(search_kwargs={"k": 30})
+        ).as_retriever(search_kwargs={"k": self.k})
         return_docs = retriver.invoke(query)
         return return_docs

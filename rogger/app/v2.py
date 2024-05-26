@@ -59,6 +59,7 @@ def _save(name, buffer):
     with open(f"assets/test/{name}.json", "w", encoding="utf-8") as file:
         json.dump(buffer, file, ensure_ascii=False, indent=4)
 
+
 def retrieve_page_content(retriever: BaseRetriever, query: str) -> List[Document]:
     buffer = []
     result = retriever.invoke(query)
@@ -68,7 +69,6 @@ def retrieve_page_content(retriever: BaseRetriever, query: str) -> List[Document
         buffer.append(Document(page_content=doc.page_content))
     _save(name="raw", buffer=[x.page_content for x in buffer])
     return buffer
-
 
 
 if "e5" not in st.session_state:
@@ -86,18 +86,18 @@ if "chat_id" not in st.session_state:
 if "docs_raw" not in st.session_state:
     logger.info("Initiating Docs ...")
     st.session_state.docs_raw = create_docs()
-if "vecstore_bm25" not in st.session_state or "vecstore_tfidf" not in st.session_state:
+if "vecstore_bm25" not in st.session_state or "vecstore_e5" not in st.session_state:
     logger.info("Initiating retriever on page content...")
-    st.session_state.vecstore_tfidf = create_vec_store(
-        retriever=st.session_state.tfidf, docs=st.session_state.docs_raw
+    st.session_state.vecstore_e5 = create_vec_store(
+        retriever=st.session_state.e5, docs=st.session_state.docs_raw
     )
     st.session_state.vecstore_bm25 = create_vec_store(
-        retriever=st.session_state.e5, docs=st.session_state.docs_raw
+        retriever=st.session_state.bm25, docs=st.session_state.docs_raw
     )
 if "llm" not in st.session_state:
     logger.info("Initiating LLM ...")
     st.session_state.llm = Ollama(
-        model="aya:8b-23", base_url="http://192.168.202.254:11434", temperature=0
+        model="aya:35b-23", base_url="http://192.168.202.254:11434", temperature=0
     )
 if "chat_history" not in st.session_state:
     logger.info("Initiating chat-history")
@@ -114,15 +114,21 @@ def click_button():
 
 
 def make_prompt(message: str = "", context: list = []):
-    template = f"""با خواندن مطالب موجود در تگ <زمینه> قست های مرتبط با سوال من رو پیدا کن و به سوال من که در قسمت <سوال> آمده است پاسخ بده
-<زمینه>
+    #     template = f"""با خواندن مطالب موجود در بخش اطلاعات پیشین قست های مرتبط با سوال من رو پیدا کن و به سوال من که در بخش سوال آمده است پاسخ بده
+    # من فقط فارسی را به خوبی صحبت میکنم. از این جهت تا حد ممکن پاسخ ها را به فارسی بگو.
+
+    # اطلاعات پیشین:
+    # {context}
+
+    # سوال:
+    # {message}"""
+
+    template = f"""{message}
+
+اطلاعات پیشین:
 {context}
-<پایان زمینه>
 
-<سوال>
-{message}
-<پایان سوال>
-
+فقط بر اساس اطلاعات موجود در بخش اطلاعات پیشین جواب خود را بگو و در صورتی که پاسخ در اطلاعات پیشین نیامده بود بگو نمی دانم.
 """
 
     logger.info(f"Invoking {template}")
@@ -142,8 +148,8 @@ for message in st.session_state.chat_history:
 def generate_response_llm(input_text, session):
     print(len(st.session_state.docs_raw))
     logger.info("Invoking prompt to LLM ...")
-    raw_context = retrieve_page_content(st.session_state.vecstore_bm25, input_text)[:14]
-    extend_context = retrieve_page_content(st.session_state.vecstore_tfidf,input_text)[:6]
+    raw_context = retrieve_page_content(st.session_state.vecstore_bm25, input_text)
+    extend_context = retrieve_page_content(st.session_state.vecstore_e5, input_text)
     raw_context.extend(extend_context)
     ctx_list = list(set([x.page_content for x in raw_context]))
     _save(name="merged", buffer=ctx_list)
