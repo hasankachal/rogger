@@ -1,4 +1,3 @@
-from langchain_chroma import Chroma
 from rogger.util.globals import *
 import pandas as pd
 

@@ -1,5 +1,5 @@
-# BB_ASSISTANT
-a rag system powered by bimebazar weblog data and custom LLM and retriever 
+# Rogger
+a rag system powered by Radars data and custom LLM and retriever 
 
 ### startup
 build application script with:
@@ -9,7 +9,7 @@ pip install -e .
 
 ### RUN API
 ```
-bb_assistant run -H 127.0.0.1 -p 9000 -v v1 
+rogger run -H 127.0.0.1 -p 9000 -v v1 
 ```
 
 or 
