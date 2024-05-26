@@ -1,12 +1,12 @@
 [
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Status >  Over time, the REL-1 air surveillance radar has been promoted.",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Type >  L-band (1 to 2 GHz) air surveillance radar",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Specifications > Frequency >  1-2 GHz",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Description >  The L-band REL-1 air surveillance radar is a medium- to long-range sensor that is designed for surveillance and fighter guidance applications where an associated height-finder is used to achieve 3-D coverage.",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Description > system features >  the ability to hand-off target data to a command and control centre",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-4 > Type >  L-band (1 to 2 GHzI air surveillance radar.",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-3 > Specifications > Frequency >  1-2 GHz",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-4 > Specifications > Frequency >  1-2 GHz",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-3 > Type >  L-band (1 to 2 GHz) air surveillance radar.",
-    "LAND-BASED AIR DEFENCE RADARS > China > REL-1 > Specifications > MTBF >  >=800 h"
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  For its part, KRONOS 3D LND is designed to provide point defence (including designation of targets to associated firing units) and gap filling within an air defence network. The accompanying specification data is generic to both the KRONOS 3D LND and NV configurations. Keywords:land-based configuration (designated as KRONOS 3D LND),  shipborne configuration (KRONOS 3D NV), ",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Described by Selex as building on its experience with radars such as EMPAR, KRONOS 3D employs a 'full' solid-state, active, phased array antenna and is available in both land-based (designated as KRONOS 3D LND) and shipborne (KRONOS 3D NV) configurations.",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  In terms of beam use, KRONOS 3D employs one pencil beam for transmission and four concurrent reception beams that feed 'high' dynamic range dedicated channels. This arrangement is implemented in order to obtain high resolution and accuracy in azimuth and elevation determination.",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > IFF antenna >  optional",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Again, coverage is obtained by means of azimuth and elevation phase scanning together with mechanical rotation in azimuth (at 60 rpm).",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > BITE >  fault identification and location",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Status >  On 3 August 2009, Finmeccanica announced that its Selex Sistemi Integrati subsidiary had been awarded a then year EUR15 million contract with regard to the supply of an IPN-S command and control system, an NA-30S fire-control system, a KRONOS 3D NV radar, a SIR-M secondary radar and a Medusa Mk 48 electro-optical system for installation aboard a new United Arab Emirates Navy 'Abu Dhabi class ship'. While not confirmed, Jane's sources suggest that the vessel referred to is the service's corvette Abu Dhabi and that the cited sale represented the first procurement of a KRONOS 3D sensor. Most recently, Selex Sistemi Integrati has continued to promote the KRONOS 3D multi role radar.",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Description >  Elsewhere, the radar is reported to make use of modular and adaptive signal processing architectures that are described as incorporating 'various integrated processes'.",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > Antenna rotation speed >  60 rpm",
+    "LAND-BASED AIR DEFENCE RADARS > Italy > KRONOS 3D > Specifications > Receiver IF dynamic range >  high linear range"
 ]
